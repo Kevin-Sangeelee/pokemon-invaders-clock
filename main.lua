@@ -184,7 +184,7 @@ function love.update(dt)
       -- Set up the particle emitter at the point of collision and start it.
       psystem:setPosition(hit.x + x_offset + 22, hit.y + y_offset + 22)
           
-      psystem:setParticleLifetime(1, 2) -- Particles live at least 2s and at most 5s.
+      psystem:setParticleLifetime(1, 2) -- Particles live at least 1s and at most 2s.
       psystem:setEmissionRate(1000)
       psystem:setEmitterLifetime(0.25)
       psystem:setSizeVariation(1)
