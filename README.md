@@ -21,8 +21,8 @@ The [moonshine shader effects](https://github.com/vrld/moonshine) are MIT licens
 
 ## Acknowledgments
 
-* Paul Kulchenko for increasing the fun of Lua with a nice IDE.
-* Love2D author for an amazingly simple and intuitive 2D engine.
+* Paul Kulchenko for the excellent ZeroBrane Lua IDE.
+* Love2D author for a simple and intuitive 2D engine.
 * Matthias Richter for the moonshine Love2D shaders.
 * Artist Skorpio for the spaceship sprite (https://opengameart.org/content/space-ship-construction-kit)
 * the sprite artists who I shamefully forgot to note down.
