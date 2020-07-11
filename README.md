@@ -4,6 +4,8 @@ A clock with a Pokemon image in the background, a large bee flying occasionally 
 
 This is a crazy amalgamation of bits to play around with Lua and Love2D. The design was largely driven by my desire to impress my children. This was minimally successful.
 
+![Screenshot](https://raw.githubusercontent.com/Kevin-Sangeelee/pokemon-invaders-clock/master/screenshot.jpg)
+
 ## Getting Started
 
 Install [ZeroBrane Studio](https://studio.zerobrane.com/) and [LÖVE 2D Game Engine](https://love2d.org/), then clone the repository someplace and set ZeroBrane's project directory to that place. You may need to tell ZeroBrane to use Love2D's interpreter (this can be selected from the top menu).
