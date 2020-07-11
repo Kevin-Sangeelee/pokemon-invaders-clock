@@ -1,8 +1,11 @@
 require("invaders")
+require("clock")
 
 -- This allows e.g. ZeroBrane to show output on the console
 -- Otherwise, stdout is buffered until the process finishes.
 io.stdout:setvbuf("no")
+
+love.mouse.setVisible(false)
 
 -- moonshine is a library for shader effects
 local moonshine = require 'moonshine'
@@ -47,6 +50,29 @@ function createBeeSprite()
   
 end
 
+function createShipSprite()
+  local sprite = {}
+  sprite.image = love.graphics.newImage("sprites/ship.png")
+  
+  sprite.x = 0
+  sprite.y = 0
+  sprite.scale = 0.5
+  
+  sprite.draw = function()
+    -- love.graphics.draw(sprite.image, sprite.x, sprite.y, math.rad(180), 0.5 * sprite.direction, sprite.image:getWidth(), sprite.image:getHeight())
+    love.graphics.draw(
+      sprite.image,
+      sprite.x,
+      sprite.y,
+      math.rad(0),
+      sprite.scale, sprite.scale,
+      sprite.image:getWidth() / 2,
+      sprite.image:getHeight() / 2)
+  end
+  
+  return sprite
+  
+end
 
 function love.load()
   
@@ -55,6 +81,7 @@ function love.load()
   effect = moonshine(moonshine.effects.boxblur).chain(moonshine.effects.scanlines)
   chompy = love.graphics.newImage("sprites/Rayquaza.png")
   
+  ship_sprite = createShipSprite()
   bee_sprite = createBeeSprite()
   
   particle1 = love.graphics.newImage("sprites/particles/particle5.png")
@@ -67,74 +94,20 @@ function love.draw()
   -- Get the time right now
   local now = os.date("*t")
   
-  local hour = now['hour'] % 12
-  local minute = now['min']
-  local second = now['sec']
-  
-  -- Calculate the angles of each hand (zero degrees 00:00)
-  local hour_angle = (360 / 720) * (hour * 60 + minute)
-  local minute_angle = (360 / 60) * minute
-  local second_angle = (360 / 60) * second
-  
-  love.graphics.setColor(1, 1, 1, 1)
-  
-  effect.draw( function() love.graphics.draw(
-        chompy,
-        love.graphics.getWidth() / 2, love.graphics.getHeight() / 2,
-        0,
-        2, 2,
-        chompy:getWidth() / 2, chompy:getHeight() / 2)
-      end)
+  drawClock(now)
   
   love.graphics.push()
-  
-  -- Translate the co-ordinate system so that (0,0) is the centre of the screen.
-  -- Rotate the co-ordinate system so that zero degrees is straight up.
-  love.graphics.translate(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 50, 50)
-  love.graphics.rotate( math.rad(180) )
-
-  -- Draw the tick marks
-  love.graphics.setColor(1, 1, 1)
-  for tick = 0, 11 do
-    if tick % 3 == 0 then
-      love.graphics.rectangle('line', -1, 195, 2, 20)
-    else
-      love.graphics.rectangle('line', -1, 210, 2, 10)
-    end
-    love.graphics.rotate(math.rad(30))
-  end  
-  -- Second hand
-  love.graphics.push()
-    love.graphics.setColor(0.9,0.4,0.4)
-    love.graphics.rotate(math.rad(second_angle))
-    love.graphics.rectangle('fill', -3, 0, 6, 200)
-    love.graphics.rectangle('line', -3, 200, 6, 10)
-  love.graphics.pop()
-  
-  -- Minute hand
-  love.graphics.push()
-    love.graphics.setColor(0.2,0.2,1)
-    love.graphics.rotate(math.rad(minute_angle))
-    love.graphics.rectangle('fill', -10, 0, 20, 180)
-    love.graphics.rectangle('line', -10, 180, 20, 10)
-  love.graphics.pop()
-  
-  -- Hour hand
-  love.graphics.push()
-    love.graphics.setColor(0.3,0.3,1)
-    love.graphics.rotate(math.rad(hour_angle))
-    love.graphics.rectangle('fill', -10, 0, 20, 120)
-    love.graphics.rectangle('line', -10, 120, 20, 10)
+    love.graphics.translate(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 50, 50)
+    love.graphics.rotate( math.rad(180) )
+    bee_sprite.draw()
   love.graphics.pop()
 
-  bee_sprite.draw()
-  
-  love.graphics.pop()
-  
   love.graphics.push()
     love.graphics.translate(30 + math.sin(math.rad(ticks)) * 70, 0)
     drawInvaders()
   love.graphics.pop()
+  
+  ship_sprite.draw()
   
   if bullet.active == true then
     love.graphics.rectangle('fill', bullet.x, bullet.y, 3, 6)
@@ -205,6 +178,11 @@ function love.update(dt)
 
 end
   
+function love.mousemoved(x, y, dx, dy, istouch)
+  ship_sprite.x = x
+  ship_sprite.y = 555
+end
+
 function love.mousepressed(x, y, button, isTouch)
   
   if bullet.active == false then
